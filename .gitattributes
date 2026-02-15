@@ -1,0 +1,3 @@
+# Scripts shell : toujours en LF pour Linux/Mac
+install.sh text eol=lf
+backend/docker-entrypoint.sh text eol=lf

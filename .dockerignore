@@ -1,0 +1,28 @@
+# Dependencies
+node_modules
+**/node_modules
+
+# Env and secrets (compose injects env at runtime)
+.env
+.env.*
+!.env.example
+
+# Git and IDE
+.git
+.gitignore
+.cursor
+.vscode
+*.log
+
+# Documentation (optional: remove if you want them in image)
+# Documentations
+
+# Local data (exclure SQLite uniquement ; garder backend/data pour pokemon.json etc.)
+data
+*.sqlite
+
+# Build artifacts
+dist
+build
+*.md
+!README.md

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Twitch Overlay</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <!-- Overlay Container -->
+    <div id="overlay-container">
+        <!-- Active Event Display -->
+        <div id="event-display" class="hidden">
+            <div id="pokemon-spawn" class="event-card">
+                <!-- Mode Spawn/Vote -->
+                <div id="spawn-mode" class="display-mode">
+                    <div class="pokemon-header">
+                        <div class="rarity-badge" id="rarity-badge"></div>
+                        <h2 id="pokemon-name">Un Pokémon sauvage apparaît!</h2>
+                    </div>
+                    <div class="pokemon-content">
+                        <img id="pokemon-sprite" src="" alt="Pokémon" class="pokemon-sprite">
+                        <div class="pokemon-info">
+                            <div class="info-row">
+                                <span class="label">Niveau:</span>
+                                <span id="pokemon-level">1</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">HP:</span>
+                                <span id="pokemon-hp">100/100</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Type:</span>
+                                <div id="pokemon-types" class="pokemon-types-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vote-section">
+                        <div class="vote-timer">
+                            <div class="timer-bar">
+                                <div id="timer-progress" class="timer-progress"></div>
+                            </div>
+                            <span id="timer-text">30s</span>
+                        </div>
+                        <div class="vote-stats">
+                            <div class="vote-stat">
+                                <img src="/assets/Pokeball.png" alt="Capture" class="vote-icon vote-icon-capture">
+                                <span id="vote-capture">0</span>
+                            </div>
+                            <div class="vote-stat">
+                                <span class="vote-icon">⚔️</span>
+                                <span id="vote-battle">0</span>
+                            </div>
+                            <div class="vote-stat">
+                                <span class="vote-icon">🏃</span>
+                                <span id="vote-flee">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mode Capture -->
+                <div id="capture-mode" class="display-mode hidden">
+                    <div class="capture-header">
+                        <h2 id="capture-title">Tentative de Capture</h2>
+                    </div>
+                    <div class="capture-content">
+                        <div class="capture-viewer">
+                            <div class="viewer-name" id="capture-viewer-name"></div>
+                            <div class="ball-container">
+                                <img id="capture-ball-sprite" src="" alt="Ball" class="ball-sprite-large">
+                                <div id="capture-stars" class="capture-stars"></div>
+                            </div>
+                        </div>
+                        <div class="vs-divider">VS</div>
+                        <div class="pokemon-container">
+                            <img id="capture-pokemon-sprite" src="" alt="Pokémon" class="pokemon-sprite capture-pokemon">
+                        </div>
+                    </div>
+                    <div id="capture-result-message" class="result-message"></div>
+                </div>
+
+                <!-- Mode Combat -->
+                <div id="battle-mode" class="display-mode hidden">
+                    <div class="battle-header">
+                        <h2 id="battle-title">Combat Pokémon</h2>
+                    </div>
+                    <div class="battle-arena">
+                        <div class="battle-pokemon battle-pokemon-left">
+                            <div class="battle-pokemon-name" id="battle-user-pokemon-name"></div>
+                            <img id="battle-user-pokemon-sprite" src="" alt="Pokémon" class="battle-sprite">
+                            <div class="battle-pokemon-info">
+                                <div class="battle-hp-bar">
+                                    <div class="battle-hp-fill" id="battle-user-hp-fill"></div>
+                                    <span class="battle-hp-text" id="battle-user-hp-text"></span>
+                                </div>
+                                <div class="battle-level">Niv. <span id="battle-user-level"></span></div>
+                            </div>
+                        </div>
+                        <div class="vs-battle">VS</div>
+                        <div class="battle-pokemon battle-pokemon-right">
+                            <div class="battle-pokemon-name" id="battle-wild-pokemon-name"></div>
+                            <img id="battle-wild-pokemon-sprite" src="" alt="Pokémon" class="battle-sprite">
+                            <div class="battle-pokemon-info">
+                                <div class="battle-hp-bar">
+                                    <div class="battle-hp-fill" id="battle-wild-hp-fill"></div>
+                                    <span class="battle-hp-text" id="battle-wild-hp-text"></span>
+                                </div>
+                                <div class="battle-level">Niv. <span id="battle-wild-level"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="battle-log" class="battle-log"></div>
+                </div>
+
+                <!-- Mode Résultat -->
+                <div id="result-mode" class="display-mode hidden">
+                    <div class="result-header">
+                        <div id="result-icon-large" class="result-icon-large"></div>
+                        <h2 id="result-title-large"></h2>
+                    </div>
+                    <div id="result-message-large" class="result-message-large"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capture Result -->
+        <div id="capture-result" class="hidden">
+            <div class="result-card" id="result-card">
+                <div id="result-icon"></div>
+                <h3 id="result-title"></h3>
+                <p id="result-message"></p>
+            </div>
+        </div>
+
+        <!-- Battle Result -->
+        <div id="battle-result" class="hidden">
+            <div class="result-card">
+                <h3 id="battle-title"></h3>
+                <div id="battle-log"></div>
+            </div>
+        </div>
+
+        <!-- Badge Unlock -->
+        <div id="badge-unlock" class="hidden">
+            <div class="badge-card">
+                <div class="badge-icon">🏆</div>
+                <h3>Badge Débloqué!</h3>
+                <p id="badge-name"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

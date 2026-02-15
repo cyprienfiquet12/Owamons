@@ -1,0 +1,24 @@
+{
+  "name": "pokemon-twitch-chat-system",
+  "version": "1.0.0",
+  "description": "Système interactif Pokémon pour Twitch",
+  "private": true,
+  "workspaces": [
+    "backend"
+  ],
+  "scripts": {
+    "dev": "cd backend && npm run dev",
+    "start": "cd backend && npm start",
+    "setup": "npm install && cd backend && npm install"
+  },
+  "keywords": [
+    "twitch",
+    "pokemon",
+    "interactive",
+    "stream"
+  ],
+  "author": "",
+  "license": "ISC"
+}
+
+

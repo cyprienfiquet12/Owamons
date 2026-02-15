@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: owamons-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-owamons}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-owamons}
+      POSTGRES_DB: ${POSTGRES_DB:-owamons}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-owamons} -d ${POSTGRES_DB:-owamons}"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    container_name: owamons-backend
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-owamons}:${POSTGRES_PASSWORD:-owamons}@postgres:5432/${POSTGRES_DB:-owamons}
+      DATABASE_SSL: "false"
+      TWITCH_CHANNEL: ${TWITCH_CHANNEL:-}
+      TWITCH_BOT_USERNAME: ${TWITCH_BOT_USERNAME:-}
+      TWITCH_ACCESS_TOKEN: ${TWITCH_ACCESS_TOKEN:-}
+      STREAMELEMENTS_WEBHOOK_SECRET: ${STREAMELEMENTS_WEBHOOK_SECRET:-}
+      WIZEBOT_WEBHOOK_SECRET: ${WIZEBOT_WEBHOOK_SECRET:-}
+      AUTO_SPAWN_ENABLED: ${AUTO_SPAWN_ENABLED:-true}
+      AUTO_SPAWN_MIN_MINUTES: ${AUTO_SPAWN_MIN_MINUTES:-5}
+      AUTO_SPAWN_MAX_MINUTES: ${AUTO_SPAWN_MAX_MINUTES:-15}
+      AUTO_ARENA_SPAWN_ENABLED: ${AUTO_ARENA_SPAWN_ENABLED:-true}
+      AUTO_ARENA_SPAWN_MIN_MINUTES: ${AUTO_ARENA_SPAWN_MIN_MINUTES:-45}
+      AUTO_ARENA_SPAWN_MAX_MINUTES: ${AUTO_ARENA_SPAWN_MAX_MINUTES:-180}
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

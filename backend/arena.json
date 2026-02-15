@@ -1,0 +1,457 @@
+[
+    {
+      "name": "Pierre",
+      "type": "Roche",
+      "badge": {
+        "name": "Badge Roche",
+        "sprite": "https://www.pokepedia.fr/images/a/ab/Badge_Roche_Kanto_LGPE.png"
+      },
+      "sprite": "https://www.pokepedia.fr/images/e/e1/Sprite_Pierre_RFVF.png",
+      "team": [
+        { "name": "Racaillou", "pokedex_number": 74, "level": 12 },
+        { "name": "Onix", "pokedex_number": 95, "level": 14 }
+      ]
+    },
+    {
+      "name": "Ondine",
+      "type": "Eau",
+      "badge": {
+        "name": "Badge Cascade",
+        "sprite": "https://www.pokepedia.fr/images/6/67/Badge_Cascade_Kanto_LGPE.png"
+      },
+      "sprite": "https://www.pokepedia.fr/images/e/e6/Sprite_Ondine_RFVF.png",
+      "team": [
+        { "name": "Stari", "pokedex_number": 120, "level": 18 },
+        { "name": "Staross", "pokedex_number": 121, "level": 21 }
+      ]
+    },
+    {
+      "name": "Major Bob",
+      "type": "Électrik",
+      "badge": {
+        "name": "Badge Foudre",
+        "sprite": "https://www.pokepedia.fr/images/9/97/Badge_Foudre_Kanto_LGPE.png"
+      },
+      "sprite": "https://www.pokepedia.fr/images/c/c6/Sprite_Major_Bob_RFVF.png",
+      "team": [
+        { "name": "Voltorbe", "pokedex_number": 100, "level": 21 },
+        { "name": "Pikachu", "pokedex_number": 25, "level": 18 },
+        { "name": "Raichu", "pokedex_number": 26, "level": 24 }
+      ]
+    },
+    {
+      "name": "Erika",
+      "type": "Plante",
+      "badge": {
+        "name": "Badge Prisme",
+        "sprite": "https://www.pokepedia.fr/Fichier:Badge_Prisme_Kanto_LGPE.png"
+      },
+      "sprite": "https://www.pokepedia.fr/images/3/39/Sprite_Erika_RFVF.png",
+      "team": [
+        { "name": "Empiflor", "pokedex_number": 71, "level": 29 },
+        { "name": "Saquedeneu", "pokedex_number": 114, "level": 24 },
+        { "name": "Rafflesia", "pokedex_number": 45, "level": 29 }
+      ]
+    },
+    {
+      "name": "Koga",
+      "type": "Poison",
+      "badge": {
+        "name": "Badge Âme",
+        "sprite": "https://archives.bulbagarden.net/media/upload/7/7f/Soul_Badge.png"
+      },
+      "sprite": "https://archives.bulbagarden.net/media/upload/6/6c/Spr_RG_Koga.png",
+      "team": [
+        { "name": "Smogo", "pokedex_number": 109, "level": 27 },
+        { "name": "Grotadmorv", "pokedex_number": 89, "level": 29 },
+        { "name": "Smogo", "pokedex_number": 109, "level": 27 },
+        { "name": "Smogogo", "pokedex_number": 110, "level": 43 }
+      ]
+    },
+    {
+      "name": "Morgane",
+      "type": "Psy",
+      "badge": {
+        "name": "Badge Marais",
+        "sprite": "https://www.pokepedia.fr/images/1/10/Badge_Marais_Kanto_LGPE.png"
+      },
+      "sprite": "https://www.pokepedia.fr/images/6/6b/Sprite_Morgane_RFVF.png",
+      "team": [
+        { "name": "Kadabra", "pokedex_number": 64, "level": 38 },
+        { "name": "M. Mime", "pokedex_number": 122, "level": 37 },
+        { "name": "Aéromite", "pokedex_number": 49, "level": 38 },
+        { "name": "Alakazam", "pokedex_number": 65, "level": 43 }
+      ]
+    },
+    {
+      "name": "Auguste",
+      "type": "Feu",
+      "badge": {
+        "name": "Badge Volcan",
+        "sprite": "https://www.pokepedia.fr/images/3/33/Badge_Volcan_Kanto_LGPE.png"
+      },
+      "sprite": "https://www.pokepedia.fr/images/c/cb/Sprite_Auguste_RFVF.png",
+      "team": [
+        { "name": "Caninos", "pokedex_number": 58, "level": 42 },
+        { "name": "Ponyta", "pokedex_number": 77, "level": 40 },
+        { "name": "Galopa", "pokedex_number": 78, "level": 42 },
+        { "name": "Arcanin", "pokedex_number": 59, "level": 47 }
+      ]
+    },
+    {
+      "name": "Giovanni",
+      "type": "Sol",
+      "badge": {
+        "name": "Badge Terre",
+        "sprite": "https://www.pokepedia.fr/images/1/15/Badge_Terre_Kanto_LGPE.png"
+      },
+      "sprite": "https://www.pokepedia.fr/images/5/53/Sprite_Giovanni_RFVF.png",
+      "team": [
+        { "name": "Rhinocorne", "pokedex_number": 111, "level": 45 },
+        { "name": "Triopikeur", "pokedex_number": 51, "level": 42 },
+        { "name": "Nidoqueen", "pokedex_number": 31, "level": 44 },
+        { "name": "Nidoking", "pokedex_number": 34, "level": 45 },
+        { "name": "Rhinoféros", "pokedex_number": 112, "level": 50 }
+      ]
+    },
+        {
+          "name": "Albert",
+          "type": "Vol",
+          "badge": {
+            "name": "Badge Zéphyr",
+            "sprite": "https://www.pokepedia.fr/images/0/02/Badge_Z%C3%A9phyr_Johto.png"
+          },
+          "sprite": "https://www.pokepedia.fr/images/b/b3/Sprite_Albert_OA.png",
+          "team": [
+            { "name": "Roucool", "pokedex_number": 16, "level": 9 },
+            { "name": "Roucoups", "pokedex_number": 17, "level": 13 }
+          ]
+        },
+        {
+          "name": "Hector",
+          "type": "Insecte",
+          "badge": {
+            "name": "Badge Essaim",
+            "sprite": "https://www.pokepedia.fr/images/d/d8/Badge_Essaim_Johto.png"
+          },
+          "sprite": "https://www.pokepedia.fr/images/a/a7/Sprite_Hector_OA.png",
+          "team": [
+            { "name": "Coconfort", "pokedex_number": 11, "level": 14 },
+            { "name": "Chrysacier", "pokedex_number": 14, "level": 14 },
+            { "name": "Insécateur", "pokedex_number": 123, "level": 16 }
+          ]
+        },
+        {
+          "name": "Blanche",
+          "type": "Normal",
+          "badge": {
+            "name": "Badge Plaine",
+            "sprite": "https://www.pokepedia.fr/images/2/2d/Badge_Plaine_Johto.png"
+          },
+          "sprite": "https://www.pokepedia.fr/images/9/9b/Sprite_Blanche_OA.png",
+          "team": [
+            { "name": "Mélofée", "pokedex_number": 35, "level": 18 },
+            { "name": "Écrémeuh", "pokedex_number": 241, "level": 20 }
+          ]
+        },
+        {
+          "name": "Mortimer",
+          "type": "Spectre",
+          "badge": {
+            "name": "Badge Brume",
+            "sprite": "https://www.pokepedia.fr/images/9/92/Badge_Brume_Johto.png"
+          },
+          "sprite": "https://www.pokepedia.fr/images/7/72/Sprite_Mortimer_OA.png",
+          "team": [
+            { "name": "Fantominus", "pokedex_number": 92, "level": 21 },
+            { "name": "Spectrum", "pokedex_number": 93, "level": 21 },
+            { "name": "Spectrum", "pokedex_number": 93, "level": 23 },
+            { "name": "Ectoplasma", "pokedex_number": 94, "level": 25 }
+          ]
+        },
+        {
+          "name": "Chuck",
+          "type": "Combat",
+          "badge": {
+            "name": "Badge Choc",
+            "sprite": "https://www.pokepedia.fr/images/c/c8/Badge_Choc_Johto.png"
+          },
+          "sprite": "https://www.pokepedia.fr/images/1/19/Sprite_Chuck_OA.png",
+          "team": [
+            { "name": "Tartard", "pokedex_number": 62, "level": 30 },
+            { "name": "Colossinge", "pokedex_number": 57, "level": 27 }
+          ]
+        },
+        {
+          "name": "Jasmine",
+          "type": "Acier",
+          "badge": {
+            "name": "Badge Minéral",
+            "sprite": "https://www.pokepedia.fr/images/f/f4/Badge_Min%C3%A9ral_Johto.png"
+          },
+          "sprite": "http://pokepedia.fr/images/9/97/Sprite_Jasmine_OA.png",
+          "team": [
+            { "name": "Magnéti", "pokedex_number": 81, "level": 30 },
+            { "name": "Magnéti", "pokedex_number": 81, "level": 30 },
+            { "name": "Steelix", "pokedex_number": 208, "level": 35 }
+          ]
+        },
+        {
+          "name": "Frédo",
+          "type": "Glace",
+          "badge": {
+            "name": "Badge Glacier",
+            "sprite": "https://www.pokepedia.fr/images/d/d6/Badge_Glacier_Johto.png"
+          },
+          "sprite": "https://www.pokepedia.fr/images/b/bb/Sprite_Fr%C3%A9do_OA.png",
+          "team": [
+            { "name": "Otaria", "pokedex_number": 86, "level": 27 },
+            { "name": "Cochignon", "pokedex_number": 221, "level": 31 },
+            { "name": "Lamantine", "pokedex_number": 87, "level": 29 }
+          ]
+        },
+        {
+          "name": "Sandra",
+          "type": "Dragon",
+          "badge": {
+            "name": "Badge Lever",
+            "sprite": "https://www.pokepedia.fr/images/f/fc/Badge_Lever_Johto.png"
+          },
+          "sprite": "https://www.pokepedia.fr/images/e/eb/Sprite_Sandra_OA.png",
+          "team": [
+            { "name": "Draco", "pokedex_number": 148, "level": 37 },
+            { "name": "Draco", "pokedex_number": 148, "level": 37 },
+            { "name": "Draco", "pokedex_number": 148, "level": 37 },
+            { "name": "Hyporoi", "pokedex_number": 230, "level": 40 }
+          ]
+        },
+        {
+              "name": "Roxanne",
+              "type": "Roche",
+              "badge": {
+                "name": "Badge Roche",
+                "sprite": "https://www.pokepedia.fr/images/3/32/Badge_Roche_Hoenn_ROSA.png"
+              },
+              "sprite": "https://www.pokepedia.fr/images/9/96/Sprite_Roxanne_RS.png",
+              "team": [
+                { "name": "Racaillou", "pokedex_number": 74, "level": 14 },
+                { "name": "Tarinor", "pokedex_number": 299, "level": 15 }
+              ]
+            },
+            {
+              "name": "Bastien",
+              "type": "Combat",
+              "badge": {
+                "name": "Badge Poing",
+                "sprite": "https://www.pokepedia.fr/images/e/e0/Badge_Poing_Hoenn_ROSA.png"
+              },
+              "sprite": "https://www.pokepedia.fr/images/6/6b/Sprite_Bastien_RS.png",
+              "team": [
+                { "name": "Machoc", "pokedex_number": 66, "level": 17 },
+                { "name": "Makuhita", "pokedex_number": 296, "level": 18 }
+              ]
+            },
+            {
+              "name": "Voltère",
+              "type": "Électrik",
+              "badge": {
+                "name": "Badge Dynamo",
+                "sprite": "https://www.pokepedia.fr/images/6/67/Badge_Dynamo_Hoenn_ROSA.png"
+              },
+              "sprite": "https://www.pokepedia.fr/images/8/8f/Sprite_Volt%C3%A8re_RS.png",
+              "team": [
+                { "name": "Magnéti", "pokedex_number": 81, "level": 22 },
+                { "name": "Voltorbe", "pokedex_number": 100, "level": 20 },
+                { "name": "Magnéton", "pokedex_number": 82, "level": 23 }
+              ]
+            },
+            {
+              "name": "Adriane",
+              "type": "Feu",
+              "badge": {
+                "name": "Badge Chaleur",
+                "sprite": "https://www.pokepedia.fr/images/3/39/Badge_Chaleur_Hoenn_ROSA.png"
+              },
+              "sprite": "https://www.pokepedia.fr/images/e/e8/Sprite_Adriane_RS.png",
+              "team": [
+                { "name": "Limagma", "pokedex_number": 218, "level": 26 },
+                { "name": "Limagma", "pokedex_number": 218, "level": 26 },
+                { "name": "Torkoal", "pokedex_number": 324, "level": 28 }
+              ]
+            },
+            {
+              "name": "Norman",
+              "type": "Normal",
+              "badge": {
+                "name": "Badge Balance",
+                "sprite": "https://www.pokepedia.fr/images/5/59/Badge_Balancier_Hoenn_ROSA.png"
+              },
+              "sprite": "https://www.pokepedia.fr/images/6/68/Sprite_Norman_RS.png",
+              "team": [
+                { "name": "Vigoroth", "pokedex_number": 288, "level": 30 },
+                { "name": "Monaflèmit", "pokedex_number": 289, "level": 28 },
+                { "name": "Monaflèmit", "pokedex_number": 289, "level": 31 }
+              ]
+            },
+            {
+              "name": "Alizée",
+              "type": "Vol",
+              "badge": {
+                "name": "Badge Plume",
+                "sprite": "https://www.pokepedia.fr/images/4/42/Badge_Plume_Hoenn_ROSA.png"
+              },
+              "sprite": "https://www.pokepedia.fr/images/b/b6/Sprite_Aliz%C3%A9e_RS.png",
+              "team": [
+                { "name": "Hélédelle", "pokedex_number": 277, "level": 31 },
+                { "name": "Airmure", "pokedex_number": 227, "level": 32 },
+                { "name": "Altaria", "pokedex_number": 334, "level": 33 },
+                { "name": "Bekipan", "pokedex_number": 279, "level": 30 }
+              ]
+            },
+            {
+              "name": "Tatia & Lévy",
+              "type": "Psy",
+              "badge": {
+                "name": "Badge Esprit",
+                "sprite": "https://www.pokepedia.fr/images/6/66/Badge_Esprit_Hoenn_ROSA.png"
+              },
+              "sprite": "https://www.pokepedia.fr/images/b/b0/Sprite_L%C3%A9vy_%26_Tatia_RS.png",
+              "team": [
+                { "name": "Solaroc", "pokedex_number": 338, "level": 42 },
+                { "name": "Séléroc", "pokedex_number": 337, "level": 42 }
+              ]
+            },
+            {
+              "name": "Juan",
+              "type": "Eau",
+              "badge": {
+                "name": "Badge Pluie",
+                "sprite": "https://www.pokepedia.fr/images/3/3f/Badge_Pluie_Hoenn_ROSA.png"
+              },
+              "sprite": "https://www.pokepedia.fr/images/6/61/Sprite_Juan_E.png",
+              "team": [
+                { "name": "Lovdisc", "pokedex_number": 370, "level": 41 },
+                { "name": "Hyporoi", "pokedex_number": 230, "level": 46 },
+                { "name": "Phogleur", "pokedex_number": 364, "level": 43 },
+                { "name": "Colhomard", "pokedex_number": 342, "level": 43 },
+                { "name": "Barbicha", "pokedex_number": 340, "level": 43 }
+              ]
+            },
+                {
+                  "name": "Pierrick",
+                  "type": "Roche",
+                  "badge": {
+                    "name": "Badge Charbon",
+                    "sprite": "https://www.pokepedia.fr/images/0/09/Badge_Charbon_Sinnoh_DEPS.png"
+                  },
+                  "sprite": "https://www.pokepedia.fr/images/5/51/Sprite_Pierrick_DP.png",
+                  "team": [
+                    { "name": "Racaillou", "pokedex_number": 74, "level": 12 },
+                    { "name": "Onix", "pokedex_number": 95, "level": 12 },
+                    { "name": "Cranidos", "pokedex_number": 408, "level": 14 }
+                  ]
+                },
+                {
+                  "name": "Flo",
+                  "type": "Plante",
+                  "badge": {
+                    "name": "Badge Forêt",
+                    "sprite": "https://www.pokepedia.fr/images/7/7b/Badge_For%C3%AAt_Sinnoh_DEPS.png"
+                  },
+                  "sprite": "https://www.pokepedia.fr/images/d/dd/Sprite_Flo_DP.png",
+                  "team": [
+                    { "name": "Ceribou", "pokedex_number": 420, "level": 19 },
+                    { "name": "Tortipouss", "pokedex_number": 387, "level": 19 },
+                    { "name": "Roserade", "pokedex_number": 407, "level": 22 }
+                  ]
+                },
+                {
+                  "name": "Mélina",
+                  "type": "Combat",
+                  "badge": {
+                    "name": "Badge Pavé",
+                    "sprite": "https://www.pokepedia.fr/images/6/6f/Badge_Pav%C3%A9_Sinnoh_DEPS.png"
+                  },
+                  "sprite": "https://www.pokepedia.fr/images/5/5f/Sprite_M%C3%A9lina_DP.png",
+                  "team": [
+                    { "name": "Meditikka", "pokedex_number": 307, "level": 27 },
+                    { "name": "Machopeur", "pokedex_number": 67, "level": 27 },
+                    { "name": "Lucario", "pokedex_number": 448, "level": 30 }
+                  ]
+                },
+                {
+                  "name": "Lovis",
+                  "type": "Eau",
+                  "badge": {
+                    "name": "Badge Palustre",
+                    "sprite": "https://www.pokepedia.fr/images/9/9f/Badge_Palustre_Sinnoh_DEPS.png"
+                  },
+                  "sprite": "https://www.pokepedia.fr/images/3/37/Sprite_Lovis_DP.png",
+                  "team": [
+                    { "name": "Mustéflott", "pokedex_number": 419, "level": 30 },
+                    { "name": "Maraiste", "pokedex_number": 195, "level": 27 },
+                    { "name": "Léviator", "pokedex_number": 130, "level": 27 }
+                  ]
+                },
+                {
+                    "name": "Kiméra",
+                    "type": "Spectre",
+                    "badge": {
+                      "name": "Badge Fantôme",
+                      "sprite": "https://www.pokepedia.fr/images/6/66/Badge_Fant%C3%B4me_Sinnoh_DEPS.png"
+                    },
+                    "sprite": "https://www.pokepedia.fr/images/2/29/Sprite_Kim%C3%A9ra_DP.png",
+                    "team": [
+                      { "name": "Magirêve", "pokedex_number": 429, "level": 36 },
+                      { "name": "Ectoplasma", "pokedex_number": 94, "level": 34 },
+                      { "name": "Grodrive", "pokedex_number": 426, "level": 32 }
+                    ]
+                  },
+                  {
+                    "name": "Charles",
+                    "type": "Acier",
+                    "badge": {
+                      "name": "Badge Mine",
+                      "sprite": "https://www.pokepedia.fr/images/7/74/Badge_Mine_Sinnoh_DEPS.png"
+                    },
+                    "sprite": "https://www.pokepedia.fr/images/9/9f/Sprite_Charles_DP.png",
+                    "team": [
+                      { "name": "Archéomire", "pokedex_number": 436, "level": 36 },
+                      { "name": "Steelix", "pokedex_number": 208, "level": 36 },
+                      { "name": "Bastiodon", "pokedex_number": 411, "level": 39 }
+                    ]
+                  },
+                  {
+                    "name": "Gladys",
+                    "type": "Glace",
+                    "badge": {
+                      "name": "Badge Glaçon",
+                      "sprite": "https://www.pokepedia.fr/images/f/fc/Badge_Gla%C3%A7on_Sinnoh_DEPS.png"
+                    },
+                    "sprite": "https://www.pokepedia.fr/images/2/2d/Sprite_Gladys_DP.png",
+                    "team": [
+                      { "name": "Blizzi", "pokedex_number": 459, "level": 38 },
+                      { "name": "Blizzaroi", "pokedex_number": 460, "level": 42 },
+                      { "name": "Charmina", "pokedex_number": 308, "level": 40 },
+                      { "name": "Farfuret", "pokedex_number": 215, "level": 38 }
+                    ]
+                  },
+                  {
+                    "name": "Tanguy",
+                    "type": "Électrik",
+                    "badge": {
+                      "name": "Badge Phare",
+                      "sprite": "https://www.pokepedia.fr/images/6/6a/Badge_Phare_Sinnoh_DEPS.png"
+                    },
+                    "sprite": "https://www.pokepedia.fr/images/6/62/Sprite_Tanguy_DP.png",
+                    "team": [
+                      { "name": "Raichu", "pokedex_number": 26, "level": 46 },
+                      { "name": "Octillery", "pokedex_number": 224, "level": 47 },
+                      { "name": "Luxray", "pokedex_number": 405, "level": 49 },
+                      { "name": "Capidextre", "pokedex_number": 424, "level": 47 }
+                    ]
+                  }
+              
+          
+      
+  ]
