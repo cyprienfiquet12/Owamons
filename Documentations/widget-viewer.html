@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokéchat — Présentation système &amp; commandes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pk-dark: #0d0d14;
+      --pk-blue: #16213e;
+      --pk-panel: rgba(15, 52, 96, 0.9);
+      --pk-panel-border: rgba(255, 255, 255, 0.12);
+      --pk-yellow: #ffd54f;
+      --pk-yellow-soft: #ffecb3;
+      --pk-red: #ef5350;
+      --pk-green: #66bb6a;
+      --pk-white: #f5f5f5;
+      --pk-text: rgba(245, 245, 245, 0.95);
+      --pk-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      --pk-radius: 16px;
+      --font-title: 'Press Start 2P', cursive;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--pk-white);
+      min-height: 100vh;
+      line-height: 1.65;
+      position: relative;
+      background: var(--pk-dark);
+    }
+
+    .page-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: var(--pk-dark) url('../frontend/assets/fond.jpg') center/cover no-repeat;
+    }
+    .page-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(13, 13, 20, 0.92) 0%, rgba(13, 13, 20, 0.86) 50%, rgba(13, 13, 20, 0.96) 100%);
+      pointer-events: none;
+    }
+
+    .frame {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 4rem;
+    }
+
+    .deco-balls { position: fixed; z-index: 2; pointer-events: none; }
+    .deco-balls--tl { top: 12px; left: 12px; }
+    .deco-balls--tr { top: 12px; right: 12px; }
+    .deco-balls--bl { bottom: 12px; left: 12px; }
+    .deco-balls--br { bottom: 12px; right: 12px; }
+    .deco-balls img {
+      width: 44px; height: 44px; object-fit: contain; display: block;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+    }
+    .deco-balls--tr img { margin-left: auto; }
+    .deco-balls--br img { margin-left: auto; }
+    .deco-balls--bl .ball-row, .deco-balls--br .ball-row { display: flex; gap: 6px; justify-content: flex-end; }
+
+    .deco-pokemon {
+      position: fixed; z-index: 2; pointer-events: none; opacity: 0.3;
+    }
+    .deco-pokemon img {
+      width: 56px; height: 56px; object-fit: contain;
+      image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;
+    }
+    .deco-pokemon--l { left: 6px; top: 50%; transform: translateY(-50%); }
+    .deco-pokemon--r { right: 6px; top: 50%; transform: translateY(-50%) scaleX(-1); }
+
+    /* Hero / accroche pub */
+    .hero {
+      text-align: center;
+      padding: 1.25rem 1rem 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-family: var(--font-title);
+      font-size: 0.5rem;
+      color: var(--pk-dark);
+      background: var(--pk-yellow);
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      letter-spacing: 1px;
+    }
+    .header-balls {
+      display: flex; justify-content: center; gap: 10px; margin-bottom: 0.75rem;
+    }
+    .header-balls img { width: 36px; height: 36px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35)); }
+    .logo {
+      font-family: var(--font-title);
+      font-size: clamp(0.65rem, 2.5vw, 0.9rem);
+      color: var(--pk-yellow);
+      text-shadow: 0 0 20px rgba(255, 213, 79, 0.4);
+      margin-bottom: 0.5rem;
+      letter-spacing: 3px;
+    }
+    .tagline {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--pk-text);
+      max-width: 38ch;
+      margin: 0 auto;
+    }
+    .tagline strong { color: var(--pk-yellow); }
+
+    .card {
+      background: var(--pk-panel);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 2px solid var(--pk-panel-border);
+      border-radius: var(--pk-radius);
+      padding: 1.25rem 1.4rem;
+      margin-bottom: 1.2rem;
+      box-shadow: var(--pk-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--pk-red), var(--pk-yellow));
+      border-radius: var(--pk-radius) var(--pk-radius) 0 0;
+    }
+    .card h2 {
+      font-family: var(--font-title);
+      font-size: 0.55rem;
+      color: var(--pk-yellow);
+      margin-bottom: 0.75rem;
+      letter-spacing: 1.5px;
+      line-height: 1.65;
+    }
+    .card p, .card li { font-size: 0.92rem; color: var(--pk-text); margin-bottom: 0.4rem; }
+    .card ul { list-style: none; padding-left: 0; }
+    .card li { padding-left: 1.3rem; position: relative; margin-bottom: 0.35rem; }
+    .card li::before { content: '▸'; position: absolute; left: 0; color: var(--pk-yellow); font-weight: 700; }
+    .card strong { color: var(--pk-yellow-soft); }
+
+    .steps .step { display: flex; gap: 0.9rem; margin-bottom: 1rem; align-items: flex-start; }
+    .step-num {
+      font-family: var(--font-title);
+      flex-shrink: 0;
+      width: 34px; height: 34px;
+      background: var(--pk-red);
+      color: var(--pk-white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.5rem;
+      border: 2px solid var(--pk-yellow);
+      box-shadow: 0 3px 0 rgba(139, 0, 0, 0.5);
+    }
+    .step-content h3 { font-size: 0.95rem; font-weight: 700; color: var(--pk-yellow); margin-bottom: 0.15rem; }
+    .step-content p, .step-content ul { font-size: 0.88rem; color: var(--pk-text); }
+    .step-content ul { margin-top: 0.25rem; }
+
+    .cmd {
+      font-family: var(--font-title);
+      font-size: 0.48rem;
+      background: rgba(0, 0, 0, 0.35);
+      color: var(--pk-green);
+      padding: 0.25rem 0.45rem;
+      border-radius: 5px;
+      border: 1px solid var(--pk-green);
+      display: inline-block;
+      margin: 0.08rem 0.15rem 0.08rem 0;
+    }
+
+    /* Section liste des commandes */
+    .cmd-section { margin-bottom: 0.5rem; }
+    .cmd-section h2 { margin-bottom: 0.6rem; }
+    .cmd-group {
+      margin-bottom: 1rem;
+    }
+    .cmd-group:last-child { margin-bottom: 0; }
+    .cmd-group-title {
+      font-family: var(--font-title);
+      font-size: 0.5rem;
+      color: var(--pk-yellow);
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
+    }
+    .cmd-list { list-style: none; padding: 0; }
+    .cmd-list li { padding-left: 0; margin-bottom: 0.5rem; }
+    .cmd-list li::before { display: none; }
+    .cmd-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.5rem;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .cmd-row:last-child { border-bottom: none; }
+    .cmd-row .cmd { margin: 0; flex-shrink: 0; }
+    .cmd-row .desc { font-size: 0.88rem; color: var(--pk-text); }
+
+    .streamer-note {
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 2px dashed var(--pk-panel-border);
+      font-size: 0.8rem;
+      color: rgba(245, 245, 245, 0.7);
+    }
+    .streamer-note .cmd { font-size: 0.45rem; }
+
+    .recap-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 0.5rem; }
+    .recap-table th, .recap-table td { padding: 0.5rem 0.6rem; text-align: left; border-bottom: 2px solid var(--pk-panel-border); }
+    .recap-table th { font-family: var(--font-title); font-size: 0.48rem; color: var(--pk-yellow); letter-spacing: 1px; }
+    .recap-table td:first-child { color: var(--pk-yellow-soft); font-weight: 600; }
+    .recap-table .cmd-cell .cmd { font-size: 0.45rem; }
+
+    .final-quote {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      margin-top: 0.25rem;
+    }
+    .final-quote p { font-size: 0.95rem; color: var(--pk-text); max-width: 42ch; margin: 0 auto; }
+    .final-quote strong { color: var(--pk-yellow); }
+    .final-quote .trophy { font-size: 1.6rem; margin-bottom: 0.4rem; }
+
+    .footer-balls { display: flex; justify-content: center; gap: 8px; margin-top: 1.5rem; }
+    .footer-balls img { width: 26px; height: 26px; object-fit: contain; opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <div class="page-bg" role="presentation"></div>
+
+  <div class="deco-balls deco-balls--tl" aria-hidden="true">
+    <img src="../frontend/assets/Pokeball.png" alt="">
+    <img src="../frontend/assets/Superball.png" alt="">
+  </div>
+  <div class="deco-balls deco-balls--tr" aria-hidden="true">
+    <img src="../frontend/assets/Hyperball.png" alt="">
+    <img src="../frontend/assets/Pokeball.png" alt="">
+  </div>
+  <div class="deco-balls deco-balls--bl" aria-hidden="true">
+    <div class="ball-row">
+      <img src="../frontend/assets/Pokeball.png" alt="">
+      <img src="../frontend/assets/Superball.png" alt="">
+    </div>
+  </div>
+  <div class="deco-balls deco-balls--br" aria-hidden="true">
+    <div class="ball-row">
+      <img src="../frontend/assets/Hyperball.png" alt="">
+      <img src="../frontend/assets/Pokeball.png" alt="">
+    </div>
+  </div>
+
+  <div class="deco-pokemon deco-pokemon--l" aria-hidden="true">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="">
+  </div>
+  <div class="deco-pokemon deco-pokemon--r" aria-hidden="true">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="">
+  </div>
+
+  <div class="frame">
+    <header class="hero">
+      <p class="hero-badge">Joue en direct dans le chat</p>
+      <div class="header-balls">
+        <img src="../frontend/assets/Pokeball.png" alt="">
+        <img src="../frontend/assets/Superball.png" alt="">
+        <img src="../frontend/assets/Hyperball.png" alt="">
+      </div>
+      <p class="logo">POKÉCHAT</p>
+      <p class="tagline">Un Pokémon sauvage apparaît à l'écran. C'est à <strong>TOI</strong> de voter : capturer, combattre ou fuir. Le stream devient une partie Pokémon géante.</p>
+    </header>
+
+    <section class="card">
+      <h2>C'est quoi Pokéchat ?</h2>
+      <p>Pokéchat, c'est <strong>ton</strong> aventure Pokémon en direct dans le chat Twitch.</p>
+      <ul>
+        <li>Un <strong>widget</strong> (l'overlay) affiche les Pokémon, les votes et les combats en direct.</li>
+        <li><strong>Toi et le chat</strong> vous votez : le résultat est tiré au sort parmi les votes.</li>
+        <li>Tu <strong>construis ton équipe</strong>, achètes des balls, gagnes des badges. Comme un vrai dresseur, à plusieurs.</li>
+      </ul>
+      <p><strong>En un mot : le stream = une partie Pokémon, et tu en fais partie.</strong></p>
+    </section>
+
+    <section class="card">
+      <h2>Comment jouer ? (3 étapes)</h2>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">1</span>
+          <div class="step-content">
+            <h3>Regarde l'overlay</h3>
+            <p>Quand un Pokémon ou une arène s'affiche, tu as quelques secondes pour voter.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">2</span>
+          <div class="step-content">
+            <h3>Tape une commande dans le chat</h3>
+            <ul>
+              <li><span class="cmd">!capture</span> [ball] — tenter de capturer (ex. <span class="cmd">!capture superball</span>)</li>
+              <li><span class="cmd">!combat</span> / <span class="cmd">!battle</span> — voter pour combattre</li>
+              <li><span class="cmd">!fuite</span> / <span class="cmd">!flee</span> — voter pour fuir</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">3</span>
+          <div class="step-content">
+            <h3>Le sort décide</h3>
+            <p>Un viewer est tiré au sort parmi les votants. Ce viewer capture, combat ou affronte l'arène. <strong>Ça peut être toi.</strong></p>
+          </div>
+        </div>
+      </div>
+      <p>Pas d'inscription : tu joues en tapant dans le chat.</p>
+    </section>
+
+    <section class="card">
+      <h2>À quoi sert le widget ?</h2>
+      <p>L'<strong>overlay</strong> est la vitrine de la partie :</p>
+      <ul>
+        <li>Il affiche <strong>quel Pokémon</strong> est apparu et sa rareté.</li>
+        <li>Il montre le <strong>temps restant</strong> pour voter et les <strong>compteurs</strong> (capture / combat / fuite).</li>
+        <li>Il anime les <strong>tentatives de capture</strong>, les <strong>combats</strong> et les <strong>arènes</strong>.</li>
+      </ul>
+      <p><strong>Avec le widget, tu vois la partie en direct — clair, réactif et hype.</strong></p>
+    </section>
+
+    <section class="card cmd-section">
+      <h2>Toutes les commandes</h2>
+      <p style="margin-bottom: 0.75rem;">Tape ces commandes dans le chat Twitch. Cooldown : 5 secondes entre chaque commande.</p>
+
+      <div class="cmd-group">
+        <p class="cmd-group-title">🎮 Votes (quand un Pokémon ou une arène est affichée)</p>
+        <ul class="cmd-list">
+          <li class="cmd-row"><span class="cmd">!capture</span> <span class="cmd">!capture superball</span> <span class="desc">— Vote pour capturer (avec la ball indiquée ; sans argument = Pokéball si tu en as).</span></li>
+          <li class="cmd-row"><span class="cmd">!combat</span> <span class="cmd">!battle</span> <span class="desc">— Vote pour combattre le Pokémon sauvage ou le champion d'arène.</span></li>
+          <li class="cmd-row"><span class="cmd">!fuite</span> <span class="cmd">!flee</span> <span class="desc">— Vote pour fuir (le Pokémon disparaît, pas de capture ni combat).</span></li>
+        </ul>
+      </div>
+
+      <div class="cmd-group">
+        <p class="cmd-group-title">💰 Économie</p>
+        <ul class="cmd-list">
+          <li class="cmd-row"><span class="cmd">!shop list</span> <span class="desc">— Afficher les items en boutique (balls, prix).</span></li>
+          <li class="cmd-row"><span class="cmd">!shop &lt;qty&gt; &lt;item&gt;</span> <span class="desc">— Acheter (ex. <span class="cmd">!shop 5 pokéball</span>).</span></li>
+          <li class="cmd-row"><span class="cmd">!pokedollars</span> <span class="cmd">!coins</span> <span class="desc">— Voir ton solde de Pokédollars.</span></li>
+          <li class="cmd-row"><span class="cmd">!inventaire</span> <span class="cmd">!inventory</span> <span class="desc">— Voir tes items (balls, etc.).</span></li>
+        </ul>
+      </div>
+
+      <div class="cmd-group">
+        <p class="cmd-group-title">⚡ Équipe</p>
+        <ul class="cmd-list">
+          <li class="cmd-row"><span class="cmd">!team</span> <span class="desc">— Afficher ton équipe (Pokémon, niveaux, KO).</span></li>
+          <li class="cmd-row"><span class="cmd">!start</span> <span class="desc">— Choisir ton premier Pokémon (starter) si tu n'en as pas.</span></li>
+          <li class="cmd-row"><span class="cmd">!soin</span> <span class="cmd">!heal</span> <span class="desc">— Soigner tous tes Pokémon KO pour qu'ils puissent combattre.</span></li>
+          <li class="cmd-row"><span class="cmd">!evolution</span> <span class="cmd">!evolve</span> <span class="desc">— Voir les Pokémon prêts à évoluer, puis utiliser <span class="cmd">!1</span> <span class="cmd">!2</span>… pour choisir lequel faire évoluer.</span></li>
+        </ul>
+      </div>
+
+      <div class="cmd-group">
+        <p class="cmd-group-title">🏆 Badges &amp; sélection</p>
+        <ul class="cmd-list">
+          <li class="cmd-row"><span class="cmd">!badge</span> <span class="cmd">!badges</span> <span class="desc">— Afficher les badges que tu as remportés (arènes).</span></li>
+          <li class="cmd-row"><span class="cmd">!1</span> <span class="cmd">!2</span> <span class="cmd">!3</span> … <span class="desc">— Choisir un Pokémon par sa position (après un combat tiré au sort, une évolution, ou un remplacement d'équipe).</span></li>
+        </ul>
+      </div>
+
+      <div class="cmd-group">
+        <p class="cmd-group-title">ℹ️ Aide</p>
+        <ul class="cmd-list">
+          <li class="cmd-row"><span class="cmd">!pokéchat</span> <span class="desc">— Résumé du système et comment jouer.</span></li>
+          <li class="cmd-row"><span class="cmd">!pokéchat list</span> <span class="desc">— Liste rapide de toutes les commandes dans le chat.</span></li>
+        </ul>
+      </div>
+
+      <p class="streamer-note"><strong>Streamer uniquement :</strong> <span class="cmd">!system start</span> / <span class="cmd">!system stop</span> — Démarrer ou arrêter les spawns et arènes automatiques. <span class="cmd">!spawn</span> — Faire apparaître un Pokémon. <span class="cmd">!spawn arena</span> — Lancer une arène.</p>
+    </section>
+
+    <section class="card">
+      <h2>En résumé</h2>
+      <table class="recap-table">
+        <thead>
+          <tr>
+            <th>Tu veux…</th>
+            <th>Tu fais…</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Comprendre le widget</td>
+            <td>L'overlay = l'écran de jeu en direct.</td>
+          </tr>
+          <tr>
+            <td>Jouer tout de suite</td>
+            <td class="cmd-cell"><span class="cmd">!capture</span> <span class="cmd">!combat</span> <span class="cmd">!fuite</span> quand un Pokémon s'affiche.</td>
+          </tr>
+          <tr>
+            <td>Voir les commandes dans le chat</td>
+            <td>Tape <span class="cmd">!pokéchat list</span>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="final-quote">
+      <p class="trophy">🏆</p>
+      <p><strong>Pokéchat</strong> : le stream devient une partie Pokémon, le widget te montre la partie, et tes commandes décident du résultat. Sois là, vote, et ça peut être toi qui captures ou qui remporte l'arène.</p>
+    </div>
+
+    <div class="footer-balls" aria-hidden="true">
+      <img src="../frontend/assets/Pokeball.png" alt="">
+      <img src="../frontend/assets/Superball.png" alt="">
+      <img src="../frontend/assets/Hyperball.png" alt="">
+    </div>
+  </div>
+  <script>
+    (function() {
+      if (window.location.protocol === 'file:') return;
+      var from = '../frontend/assets/';
+      var to = '/assets/';
+      document.querySelectorAll('.deco-balls img, .header-balls img, .footer-balls img').forEach(function(el) {
+        if (el.src && el.src.indexOf(from) !== -1) el.src = el.src.replace(from, to);
+      });
+      var bg = document.querySelector('.page-bg');
+      if (bg) bg.style.backgroundImage = "url('/assets/fond.jpg')";
+    })();
+  </script>
+</body>
+</html>

@@ -81,10 +81,10 @@ export async function spawnArena() {
     throw new Error('Aucune arène disponible');
   }
   
-  // Créer l'événement d'arène (30 secondes comme les spawns normaux)
+  // Créer l'événement d'arène (1m30 pour voter)
   const result = await query(`
     INSERT INTO active_events (type, arena_id, status, processing_state, expires_at)
-    VALUES ($1, $2, 'active', 'voting', NOW() + INTERVAL '30 seconds')
+    VALUES ($1, $2, 'active', 'voting', NOW() + INTERVAL '90 seconds')
     RETURNING id, expires_at
   `, ['arena', arena.id]);
   

@@ -132,13 +132,13 @@ function parseCommand(message, userId) {
     return { type: 'badge', userId };
   }
   
-  // !chatmon [list] - Afficher les infos du widget ou lister les commandes
-  if (trimmed.startsWith('!chatmon')) {
+  // !pokéchat [list] - Afficher les infos du widget ou lister les commandes
+  if (trimmed.startsWith('!pokéchat')) {
     if (parts.length >= 2 && parts[1] === 'list') {
-      return { type: 'chatmon', userId, action: 'list' };
+      return { type: 'pokéchat', userId, action: 'list' };
     } else {
-      // !chatmon seul - afficher les infos du widget
-      return { type: 'chatmon', userId, action: 'info' };
+      // !pokéchat seul - afficher les infos du widget
+      return { type: 'pokéchat', userId, action: 'info' };
     }
   }
   
@@ -625,10 +625,10 @@ async function handleBadgeCommand(userId, channel, username) {
 }
 
 /**
- * Gère la commande !chatmon - Afficher les infos du widget ou lister les commandes
+ * Gère la commande !pokéchat - Afficher les infos du widget ou lister les commandes
  */
-async function handleChatmonCommand(command, userId, channel, username) {
-  if (!checkCooldown(userId, 'chatmon')) {
+async function handlePokéchatCommand(command, userId, channel, username) {
+  if (!checkCooldown(userId, 'pokéchat')) {
     client.say(channel, `@${username}, commande en cooldown.`);
     return;
   }
@@ -641,17 +641,17 @@ async function handleChatmonCommand(command, userId, channel, username) {
       `⚡ ÉQUIPE → !team • !start • !soin/!heal • !evolution/!evolve | ` +
       `🏆 BADGES → !badge | ` +
       `🔢 SÉLECTION → !1, !2, !3... (événements ou après !evolution) | ` +
-      `ℹ️ INFO → !chatmon • !chatmon list`;
+      `ℹ️ INFO → !pokéchat • !pokéchat list`;
     
     client.say(channel, commandsMessage);
   } else {
-    // !chatmon seul - expliquer le principe du widget
-    const infoMessage = `🎮 @${username}, ChatMon est un widget interactif Pokémon ! ` +
+    // !pokéchat seul - expliquer le principe du widget
+    const infoMessage = `🎮 @${username}, Pokéchat est un widget interactif Pokémon ! ` +
       `Votez avec !capture, !combat ou !fuite quand un Pokémon sauvage apparaît. ` +
       `Lors des arènes, votez !combat ou !fuite pour affronter les champions. ` +
       `Le gagnant du vote est tiré au sort pour capturer, combattre ou affronter une arène. ` +
       `Construisez votre équipe, achetez des items, remportez des badges et devenez le meilleur dresseur ! ` +
-      `Tapez !chatmon list pour voir toutes les commandes.`;
+      `Tapez !pokéchat list pour voir toutes les commandes.`;
     
     client.say(channel, infoMessage);
   }
@@ -1075,6 +1075,9 @@ async function handleStarterSelection(userId, channel, username, index) {
     VALUES (?, ?, ?, 0, ?, false)
   `, [userId, selectedStarter.id, starterLevel, currentHP]);
 
+  const { addToUserPokedex } = await import('../services/pokedexService.js');
+  await addToUserPokedex(userId, selectedStarter.id, starterLevel);
+
   // Supprimer la sélection en cours
   await query('DELETE FROM starter_selections WHERE user_id = ?', [userId]);
 
@@ -1280,6 +1283,9 @@ async function handleReplacementSelection(eventId, userId, channel, username, in
     VALUES (?, ?, ?, 0, ?, false)
   `, [userId, event.pokemon_id, pokemonLevel, currentHP]);
 
+  const { addToUserPokedex } = await import('../services/pokedexService.js');
+  await addToUserPokedex(userId, event.pokemon_id, pokemonLevel);
+
   // Récompenser avec 100 pokédollars
   const { addCoins } = await import('../services/economyService.js');
   await addCoins(userId, 100);
@@ -1418,8 +1424,8 @@ export async function connectTwitchChat() {
             await handleBadgeCommand(user.id, channel, displayName);
             break;
           
-          case 'chatmon':
-            await handleChatmonCommand(command, user.id, channel, displayName);
+          case 'pokéchat':
+            await handlePokéchatCommand(command, user.id, channel, displayName);
             break;
           
           case 'system':

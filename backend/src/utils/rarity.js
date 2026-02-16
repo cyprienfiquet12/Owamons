@@ -65,8 +65,8 @@ export const LEGENDARY_CAPTURE_CAP = 0.25;
  * Timer de vote par type d'événement (en secondes)
  */
 export const VOTE_TIMERS = {
-  normal: 30,
-  legendary: 45
+  normal: 90,    // 1m30 pour Pokémon sauvage
+  legendary: 90  // 1m30 pour légendaire
 };
 
 

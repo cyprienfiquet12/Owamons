@@ -40,13 +40,18 @@ export async function initDatabase() {
     // Si ce n'est pas une erreur d'URL, c'est peut-être un format différent, continuer
   }
   
+  // SSL requis pour Supabase et autres BDD cloud (tolérant : .env avec espace ou valeur "true")
+  const useSsl = String(process.env.DATABASE_SSL || '').trim().toLowerCase() === 'true' ||
+    (process.env.DATABASE_URL || '').includes('supabase.com');
+  const sslOption = useSsl ? { rejectUnauthorized: false } : false;
+
   db = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
-    // Configuration du pool pour éviter les problèmes de connexion
-    max: 20, // Nombre max de connexions dans le pool
-    idleTimeoutMillis: 30000, // Fermer les connexions inactives après 30s
-    connectionTimeoutMillis: 2000, // Timeout de connexion de 2s
+    ssl: sslOption,
+    // Configuration du pool (timeout plus long pour BDD distante type Supabase)
+    max: 20,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 10000, // 10s pour connexions cloud
   });
   
   // Tester la connexion

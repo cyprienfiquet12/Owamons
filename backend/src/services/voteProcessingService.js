@@ -12,10 +12,11 @@ async function sendChatMessage(message) {
 const MAX_TEAM_SIZE = 6; // Taille maximale d'une équipe Pokémon
 
 /**
- * Détermine le vote gagnant pour un événement
+ * Détermine le vote gagnant pour un événement.
+ * En cas d'égalité, un des choix à égalité est tiré au sort.
  * @param {number} eventId
  * @param {boolean} isArenaEvent - Si true, exclut 'capture' des votes possibles
- * @returns {Promise<string|null>} 'capture', 'battle', 'flee', ou null si égalité
+ * @returns {Promise<string|null>} 'capture', 'battle', 'flee', ou null si aucun vote
  */
 export async function determineWinningVote(eventId, isArenaEvent = false) {
   const stats = await getVoteStats(eventId);
@@ -46,12 +47,15 @@ export async function determineWinningVote(eventId, isArenaEvent = false) {
   // Trier par nombre de votes décroissant
   votes.sort((a, b) => b.count - a.count);
   
-  // Si égalité entre le premier et le deuxième, retourner null (pas de vote gagnant)
-  if (votes.length > 1 && votes[0].count === votes[1].count && votes[0].count > 0) {
-    return null; // Égalité
+  const maxCount = votes[0].count;
+  if (maxCount === 0) {
+    return null;
   }
   
-  return votes[0].count > 0 ? votes[0].type : null;
+  // En cas d'égalité, prendre tous les choix à égalité et en choisir un au hasard
+  const tiedOptions = votes.filter((v) => v.count === maxCount);
+  const chosen = tiedOptions[Math.floor(Math.random() * tiedOptions.length)];
+  return chosen.type;
 }
 
 /**
@@ -319,6 +323,9 @@ export async function attemptCaptureForVoter(eventId, userId, ballType, ballBonu
       INSERT INTO user_pokemons (user_id, pokemon_id, level, xp, current_hp, is_ko)
       VALUES (?, ?, ?, 0, ?, false)
     `, [userId, event.pokemon_id, pokemonLevel, currentHP]);
+    
+    const { addToUserPokedex } = await import('./pokedexService.js');
+    await addToUserPokedex(userId, event.pokemon_id, pokemonLevel);
     
     // Récompenser avec 100 pokédollars (comme demandé)
     const { addCoins } = await import('./economyService.js');

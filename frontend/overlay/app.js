@@ -1,4 +1,5 @@
 // Configuration
+console.log('[Overlay] app.js chargé — URL:', window.location.href);
 const SOCKET_URL = window.location.origin;
 const socket = io(SOCKET_URL);
 
@@ -66,6 +67,78 @@ const RARITY_COLORS = {
   LEGENDARY: { class: 'legendary', label: 'Légendaire' }
 };
 
+// Plage des numéros Pokédex pour le fallback (cri aléatoire si fichier absent)
+const POKEDEX_CRY_MIN = 1;
+const POKEDEX_CRY_MAX = 1025;
+
+/**
+ * Joue un cri aléatoire (fallback quand le fichier du Pokémon n'existe pas)
+ * @param {number} excludeId - Numéro à exclure du tirage
+ */
+function playRandomCryFallback(excludeId) {
+  let id = excludeId;
+  const maxAttempts = 20;
+  for (let i = 0; i < maxAttempts; i++) {
+    id = POKEDEX_CRY_MIN + Math.floor(Math.random() * (POKEDEX_CRY_MAX - POKEDEX_CRY_MIN + 1));
+    if (id !== excludeId) break;
+  }
+  const base = window.location.origin;
+  const url = `${base}/assets/pokemon/cries/${id}.ogg`;
+  const audio = new Audio(url);
+  audio.volume = 0.7;
+  audio.onerror = () => {}; // Éviter boucle si le fallback échoue aussi
+  audio.play().catch(() => {});
+}
+
+/**
+ * Joue le son par défaut pour un combat d'arène (/assets/pokemon/default.mp3)
+ */
+function playArenaDefaultSound() {
+  const base = window.location.origin;
+  const audio = new Audio(`${base}/assets/pokemon/default.mp3`);
+  audio.volume = 0.5;
+  audio.play().catch(() => {});
+}
+
+/**
+ * Joue le cri du Pokémon à l'apparition (fichiers dans /assets/pokemon/cries/{pokedex_id}.ogg).
+ * Si le fichier n'existe pas, joue un cri aléatoire.
+ * @param {number} pokedexId - Numéro Pokédex du Pokémon
+ */
+function playPokemonCry(pokedexId) {
+  console.log('[Cri Pokémon] playPokemonCry appelé', { pokedexId, type: typeof pokedexId });
+  if (pokedexId == null || pokedexId === undefined) {
+    console.warn('[Cri Pokémon] pokedex_id manquant, cri ignoré', { pokedexId });
+    return;
+  }
+  const base = window.location.origin;
+  const url = `${base}/assets/pokemon/cries/${pokedexId}.ogg`;
+  console.log('[Cri Pokémon] Création Audio', { url, origin: base });
+  const audio = new Audio(url);
+  audio.volume = 0.7;
+  let fallbackPlayed = false;
+  function tryFallback() {
+    if (fallbackPlayed) return;
+    fallbackPlayed = true;
+    console.warn('[Cri Pokémon] Fichier absent ou erreur, lecture d’un cri aléatoire', url);
+    playRandomCryFallback(pokedexId);
+  }
+
+  audio.addEventListener('loadstart', () => console.log('[Cri Pokémon] loadstart', url));
+  audio.addEventListener('canplay', () => console.log('[Cri Pokémon] canplay', url));
+  audio.addEventListener('canplaythrough', () => console.log('[Cri Pokémon] canplaythrough', url));
+  audio.addEventListener('playing', () => console.log('[Cri Pokémon] playing (lecture en cours)', url));
+  audio.addEventListener('ended', () => console.log('[Cri Pokémon] ended (lecture terminée)', url));
+  audio.addEventListener('error', tryFallback);
+
+  audio.play()
+    .then(() => console.log('[Cri Pokémon] play() résolu (lecture démarrée)', url))
+    .catch((e) => {
+      console.warn('[Cri Pokémon] play() rejeté', url, { name: e?.name, message: e?.message });
+      tryFallback();
+    });
+}
+
 // Connexion Socket.io
 socket.on('connect', () => {
   socket.emit('get_active_event');
@@ -86,10 +159,10 @@ socket.on('pokemon_spawn', (data) => {
     console.error('❌ Missing expires_at in event data!');
     return;
   }
-  
+
   // Sauvegarder currentEvent avant resetDisplay pour ne pas le perdre
   const eventData = data;
-  
+
   displayPokemonSpawn(data);
   
   // Définir currentEvent APRÈS resetDisplay pour qu'il soit disponible pour le timer
@@ -370,7 +443,7 @@ function resetDisplay() {
     timerProgress.style.width = '100%';
     timerProgress.classList.remove('legendary');
   }
-  if (timerText) timerText.textContent = '30s';
+  if (timerText) timerText.textContent = '1m30';
   
   // Réinitialiser les sprites
   if (pokemonSprite) {
@@ -482,7 +555,10 @@ function displayArenaSpawn(event) {
     console.error('❌ pokemonSpawn element not found!');
     return;
   }
-  
+
+  // Jouer le son d'arène par défaut
+  playArenaDefaultSound();
+
   // Afficher le nom avec le sprite du badge si disponible
   if (arena.badge && arena.badge.sprite_url) {
     // Créer un conteneur pour le nom avec le badge
@@ -640,7 +716,10 @@ function displayPokemonSpawn(event) {
     console.error('❌ pokemonSpawn element not found!');
     return;
   }
-  
+
+  // Jouer le cri du Pokémon à l'apparition
+  playPokemonCry(pokemon.pokedex_id);
+
   pokemonName.textContent = `Un ${pokemon.name} sauvage apparaît!`;
   
   // Réafficher le vote "capture" pour les spawns normaux
@@ -754,15 +833,15 @@ function startTimer(event) {
   
   // Déterminer la durée du timer selon le type d'événement AVANT de calculer initialSeconds
   let isLegendary = false;
-  let total = 30; // Durée par défaut (30 secondes pour spawn normal et arènes)
+  const VOTE_DURATION_SECONDS = 90; // 1m30 pour spawn sauvage et arène
+  let total = VOTE_DURATION_SECONDS;
   
   if (event.type === 'arena') {
-    // Les arènes ont une durée de 30 secondes (comme les spawns normaux)
-    total = 30;
+    total = VOTE_DURATION_SECONDS;
     timerProgress.classList.remove('legendary');
   } else if (event.pokemon) {
     isLegendary = event.pokemon.rarity === 'LEGENDARY';
-    total = isLegendary ? 45 : 30;
+    total = VOTE_DURATION_SECONDS;
     
     if (isLegendary) {
       timerProgress.classList.add('legendary');
@@ -786,9 +865,13 @@ function startTimer(event) {
     initialSeconds = total; // Forcer à la durée totale
   }
   
-  // Fonction pour formater le temps restant
+  // Fonction pour formater le temps restant (ex: 90 → "1m30", 45 → "45s")
   const formatTime = (secs) => {
-    // Format secondes pour tous les événements (spawns et arènes)
+    if (secs >= 60) {
+      const m = Math.floor(secs / 60);
+      const s = secs % 60;
+      return s > 0 ? `${m}m${s}` : `${m}m`;
+    }
     return `${secs}s`;
   };
   

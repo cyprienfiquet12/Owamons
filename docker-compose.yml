@@ -24,8 +24,9 @@ services:
     environment:
       PORT: 3000
       NODE_ENV: production
-      DATABASE_URL: postgresql://${POSTGRES_USER:-owamons}:${POSTGRES_PASSWORD:-owamons}@postgres:5432/${POSTGRES_DB:-owamons}
-      DATABASE_SSL: "false"
+      # Utilise DATABASE_URL du .env si défini (ex. Supabase), sinon BDD Docker
+      DATABASE_URL: ${DATABASE_URL:-postgresql://owamons:owamons@postgres:5432/owamons}
+      DATABASE_SSL: ${DATABASE_SSL:-false}
       TWITCH_CHANNEL: ${TWITCH_CHANNEL:-}
       TWITCH_BOT_USERNAME: ${TWITCH_BOT_USERNAME:-}
       TWITCH_ACCESS_TOKEN: ${TWITCH_ACCESS_TOKEN:-}

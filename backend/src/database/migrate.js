@@ -58,6 +58,18 @@ async function runMigrations() {
     );
     await runMigration(migration009);
 
+    const migration010 = readFileSync(
+      join(__dirname, 'migrations', '010_user_pokedex.sql'),
+      'utf-8'
+    );
+    await runMigration(migration010);
+
+    const migration011 = readFileSync(
+      join(__dirname, 'migrations', '011_add_lvl_user_pokedex.sql'),
+      'utf-8'
+    );
+    await runMigration(migration011);
+
     process.exit(0);
   } catch (error) {
     console.error('❌ Migration error:', error);

@@ -2,6 +2,7 @@ import { query, queryOne, queryResult } from '../database/connection.js';
 import { BASE_CAPTURE_RATES, LEGENDARY_CAPTURE_CAP, RARITY } from '../utils/rarity.js';
 import { rewardCapture, rewardParticipation } from './economyService.js';
 import { applyLegendaryCaptureCap, isLegendary } from './legendaryService.js';
+import { addToUserPokedex } from './pokedexService.js';
 
 /**
  * Enregistre un vote de capture pour un utilisateur
@@ -184,6 +185,8 @@ export async function attemptCapture(eventId, userId, ballBonus = 0) {
       INSERT INTO user_pokemons (user_id, pokemon_id, level, xp, current_hp, is_shiny)
       VALUES (?, ?, ?, 0, ?, ?)
     `, [userId, pokemon.id, event.level, currentHP, isShiny ? 1 : 0]);
+    
+    await addToUserPokedex(userId, pokemon.id, event.level);
     
     // Récompenser l'utilisateur
     const rewards = await rewardCapture(userId, pokemon.rarity);
