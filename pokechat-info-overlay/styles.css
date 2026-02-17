@@ -1,0 +1,96 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: transparent;
+    overflow: hidden;
+    color: #fff;
+}
+
+/* Position par défaut : bas gauche, à adapter dans OBS */
+.widget {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    pointer-events: auto;
+}
+
+.widget-inner {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 680px;
+    min-height: 160px;
+    border-radius: 50px;
+    padding: 0;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(20, 20, 40, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.widget-logo {
+    flex-shrink: 0;
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    padding: 14px;
+    margin-right: 4px;
+}
+
+.slides-wrap {
+    flex: 1;
+    min-width: 0;
+    padding: 22px 24px 22px 8px;
+    /* Hauteur fixe pour que la card ne change pas de taille entre les slides */
+    height: 116px;
+    display: flex;
+    align-items: center;
+}
+
+.slides {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(12px);
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
+    display: flex;
+    align-items: center;
+}
+
+.slide.active {
+    position: absolute;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.slide-text {
+    font-size: 28px;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.slide-text code {
+    background: rgba(255, 255, 255, 0.12);
+    color: #7dd3fc;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 24px;
+    font-family: 'Consolas', 'Monaco', monospace;
+}

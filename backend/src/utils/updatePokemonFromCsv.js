@@ -100,6 +100,7 @@ export async function updatePokemonFromCsv() {
   }
 
   const idx = parseHeader(lines[0]);
+  const pokemonIdIdx = idx['Pokemon Id'];
   const pokedexNumIdx = idx['Pokedex Number'];
   const altFormIdx = idx['Alternate Form Name'];
   const legendaryTypeIdx = idx['Legendary Type'];
@@ -108,8 +109,19 @@ export async function updatePokemonFromCsv() {
   const preEvoIdx = idx['Pre-Evolution Pokemon Id'];
   const evolutionDetailsIdx = idx['Evolution Details'];
 
-  if ([pokedexNumIdx, altFormIdx, legendaryTypeIdx, expGrowthIdx, expGrowthTotalIdx, preEvoIdx, evolutionDetailsIdx].some((i) => i == null)) {
+  if ([pokemonIdIdx, pokedexNumIdx, altFormIdx, legendaryTypeIdx, expGrowthIdx, expGrowthTotalIdx, preEvoIdx, evolutionDetailsIdx].some((i) => i == null)) {
     throw new Error('Colonnes attendues manquantes dans le CSV');
+  }
+
+  // Mapping Pokemon Id (CSV) -> Pokedex Number : "Pre-Evolution Pokemon Id" est un Pokemon Id, la BDD attend un pokedex_id
+  const pokemonIdToPokedexNumber = new Map();
+  for (let i = 1; i < lines.length; i++) {
+    const row = parseCsvLine(lines[i]);
+    const pokemonId = parseIntOrNull(row[pokemonIdIdx]);
+    const pokedexNumber = parseIntOrNull(row[pokedexNumIdx]);
+    if (pokemonId != null && pokedexNumber != null) {
+      pokemonIdToPokedexNumber.set(pokemonId, pokedexNumber);
+    }
   }
 
   let updated = 0;
@@ -140,7 +152,9 @@ export async function updatePokemonFromCsv() {
 
     const experienceGrowth = nullIfCsvNull(row[expGrowthIdx]);
     const experienceGrowthTotal = parseIntOrNull(row[expGrowthTotalIdx]);
-    const preEvolutionPokedexId = parseIntOrNull(row[preEvoIdx]);
+    // Pre-Evolution Pokemon Id (CSV) = Pokemon Id ; on stocke en BDD le Pokedex Number de cette pré-évolution
+    const preEvoPokemonId = parseIntOrNull(row[preEvoIdx]);
+    const preEvolutionPokedexId = preEvoPokemonId != null ? (pokemonIdToPokedexNumber.get(preEvoPokemonId) ?? null) : null;
     const evolutionDetails = nullIfCsvNull(row[evolutionDetailsIdx]);
 
     const existing = await query(

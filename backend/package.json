@@ -12,7 +12,8 @@
     "import-pokemon": "node src/utils/pokemonDataImporter.js",
     "import-arena": "node src/utils/arenaDataImporter.js",
     "translate-types": "node src/utils/translateTypesToFrench.js",
-    "update-pokemon-csv": "node src/utils/updatePokemonFromCsv.js"
+    "update-pokemon-csv": "node src/utils/updatePokemonFromCsv.js",
+    "fix-pre-evolution": "node scripts/fix-pre-evolution-pokedex-id.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

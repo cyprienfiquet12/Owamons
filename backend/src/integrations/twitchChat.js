@@ -68,20 +68,22 @@ function parseCommand(message, userId) {
   const trimmed = message.trim().toLowerCase();
   const parts = trimmed.split(/\s+/);
   
-  // !capture [ball_type] ou !vote capture [ball_type]
-  if (trimmed.startsWith('!capture') || trimmed.startsWith('!vote capture')) {
-    const ballType = parts.length >= 2 && parts[0] === '!capture' ? parts[1] : 
-                     parts.length >= 3 && parts[0] === '!vote' ? parts[2] : null;
+  // !capture [ball_type] ou !vote capture [ball_type] — alias: !cap, !catch
+  if (trimmed.startsWith('!capture') || trimmed.startsWith('!vote capture') || trimmed.startsWith('!cap') || trimmed.startsWith('!catch')) {
+    const first = parts[0];
+    const isCapture = first === '!capture' || first === '!cap' || first === '!catch';
+    const ballType = parts.length >= 2 && isCapture ? parts[1] :
+                     parts.length >= 3 && first === '!vote' ? parts[2] : null;
     return { type: 'capture', userId, ballType };
   }
   
-  // !combat ou !battle
-  if (trimmed.startsWith('!combat') || trimmed.startsWith('!battle')) {
+  // !combat ou !battle — alias: !fight, !bat
+  if (trimmed.startsWith('!combat') || trimmed.startsWith('!battle') || trimmed.startsWith('!fight') || trimmed.startsWith('!bat')) {
     return { type: 'battle', userId };
   }
   
-  // !fuite ou !flee
-  if (trimmed.startsWith('!fuite') || trimmed.startsWith('!flee')) {
+  // !fuite ou !flee — alias: !run
+  if (trimmed.startsWith('!fuite') || trimmed.startsWith('!flee') || trimmed.startsWith('!run')) {
     return { type: 'flee', userId };
   }
   
@@ -90,60 +92,58 @@ function parseCommand(message, userId) {
     return { type: 'heal', userId };
   }
 
-  // !evolution - Liste les Pokémon prêts à évoluer et permet de choisir lequel faire évoluer
-  if (trimmed.startsWith('!evolution') || trimmed.startsWith('!evolve')) {
+  // !evolution / !evolve — alias: !evo
+  if (trimmed.startsWith('!evolution') || trimmed.startsWith('!evolve') || trimmed.startsWith('!evo')) {
     return { type: 'evolution', userId };
   }
   
-  // !shop list ou !shop <quantity> <item_name>
-  if (trimmed.startsWith('!shop')) {
+  // !shop list ou !shop <quantity> <item_name> — alias: !buy pour acheter, !boutique
+  if (trimmed.startsWith('!shop') || trimmed.startsWith('!buy') || trimmed.startsWith('!boutique')) {
     if (parts.length >= 2) {
-      // !shop list
       if (parts[1] === 'list') {
         return { type: 'shop', userId, action: 'list' };
       }
-      // !shop <quantity> <item_name>
-      // Exemple: !shop 10 pokeball
       const quantity = parseInt(parts[1]);
       if (!isNaN(quantity) && parts.length >= 3) {
-        const itemName = parts.slice(2).join(' '); // Permet les noms avec espaces
+        const itemName = parts.slice(2).join(' ');
         return { type: 'shop', userId, action: 'buy', itemName, quantity };
       }
     }
-  }
-  
-  // !pokedollars ou !pokedolars ou !coins
-  if (trimmed.startsWith('!pokedollars') || trimmed.startsWith('!pokedolars') || trimmed.startsWith('!coins')) {
-    return { type: 'pokedollars', userId };
-  }
-  
-  // !inventaire ou !inventory
-  if (trimmed.startsWith('!inventaire') || trimmed.startsWith('!inventory')) {
-    return { type: 'inventaire', userId };
-  }
-  
-  // !team - Afficher l'équipe du viewer
-  if (trimmed.startsWith('!team')) {
-    return { type: 'team', userId };
-  }
-  
-  // !badge ou !badges - Afficher les badges du viewer
-  if (trimmed.startsWith('!badge') || trimmed.startsWith('!badges')) {
-    return { type: 'badge', userId };
-  }
-  
-  // !pokéchat [list] - Afficher les infos du widget ou lister les commandes
-  if (trimmed.startsWith('!pokéchat')) {
-    if (parts.length >= 2 && parts[1] === 'list') {
-      return { type: 'pokéchat', userId, action: 'list' };
-    } else {
-      // !pokéchat seul - afficher les infos du widget
-      return { type: 'pokéchat', userId, action: 'info' };
+    if (trimmed.startsWith('!shop') || trimmed.startsWith('!boutique')) {
+      return { type: 'shop', userId, action: 'list' };
     }
   }
   
-  // !system [start|stop] - Démarrer/arrêter le système complet (streamer seulement)
-  if (trimmed.startsWith('!system')) {
+  // !pokedollars / !pokedolars / !coins — alias: !money, !pd, !$
+  if (trimmed.startsWith('!pokedollars') || trimmed.startsWith('!pokedolars') || trimmed.startsWith('!coins') || trimmed.startsWith('!money') || trimmed.startsWith('!pd') || trimmed.startsWith('!$')) {
+    return { type: 'pokedollars', userId };
+  }
+  
+  // !inventaire / !inventory — alias: !inv, !i
+  if (trimmed.startsWith('!inventaire') || trimmed.startsWith('!inventory') || trimmed.startsWith('!inv') || trimmed === '!i' || trimmed.startsWith('!i ')) {
+    return { type: 'inventaire', userId };
+  }
+  
+  // !team — alias: !equipe, !eq, !t
+  if (trimmed.startsWith('!team') || trimmed.startsWith('!equipe') || trimmed === '!eq' || trimmed.startsWith('!eq ') || trimmed === '!t' || trimmed.startsWith('!t ')) {
+    return { type: 'team', userId };
+  }
+  
+  // !badge / !badges — alias: !b (après !buy pour éviter conflit)
+  if (trimmed.startsWith('!badge') || trimmed.startsWith('!badges') || trimmed === '!b' || trimmed.startsWith('!b ')) {
+    return { type: 'badge', userId };
+  }
+  
+  // !pokéchat [list] — alias: !pokechat, !help, !aide, !pc
+  if (trimmed.startsWith('!pokéchat') || trimmed.startsWith('!pokechat') || trimmed.startsWith('!help') || trimmed.startsWith('!aide') || trimmed.startsWith('!pc')) {
+    if (parts.length >= 2 && parts[1] === 'list') {
+      return { type: 'pokéchat', userId, action: 'list' };
+    }
+    return { type: 'pokéchat', userId, action: 'info' };
+  }
+  
+  // !system [start|stop] — alias: !sys
+  if (trimmed.startsWith('!system') || trimmed.startsWith('!sys')) {
     if (parts.length >= 2) {
       const action = parts[1].toLowerCase();
       if (action === 'start' || action === 'stop') {
@@ -153,16 +153,16 @@ function parseCommand(message, userId) {
     return { type: 'system', userId, action: 'status' };
   }
   
-  // !spawn [arena] (streamer seulement)
-  if (trimmed.startsWith('!spawn')) {
+  // !spawn [arena] — alias: !sp (streamer seulement)
+  if (trimmed.startsWith('!spawn') || trimmed === '!sp' || trimmed.startsWith('!sp ')) {
     if (parts.length >= 2 && parts[1] === 'arena') {
       return { type: 'spawn_arena', userId };
     }
     return { type: 'spawn', userId };
   }
   
-  // !start - Choisir un starter
-  if (trimmed.startsWith('!start')) {
+  // !start — alias: !starter, !st
+  if (trimmed.startsWith('!start') || trimmed.startsWith('!starter') || trimmed === '!st' || trimmed.startsWith('!st ')) {
     return { type: 'start', userId };
   }
   
@@ -634,14 +634,14 @@ async function handlePokéchatCommand(command, userId, channel, username) {
   }
 
   if (command.action === 'list') {
-    // Regrouper toutes les commandes dans un seul message avec un formatage user-friendly
-    const commandsMessage = `📋 @${username}, Commandes disponibles: ` +
-      `🎮 VOTES → !capture [ball] • !combat/!battle • !fuite/!flee | ` +
-      `💰 ÉCONOMIE → !shop list • !shop <qty> <item> • !pokedollars/!coins • !inventaire/!inventory | ` +
-      `⚡ ÉQUIPE → !team • !start • !soin/!heal • !evolution/!evolve | ` +
+    // Regrouper toutes les commandes dans un seul message avec un formatage user-friendly (alias entre parenthèses)
+    const commandsMessage = `📋 @${username}, Commandes: ` +
+      `🎮 VOTES → !capture/!cap [ball] • !combat/!battle/!fight • !fuite/!flee/!run | ` +
+      `💰 ÉCONOMIE → !shop/!buy list • !shop <qty> <item> • !pokedollars/!coins/!pd • !inventaire/!inv | ` +
+      `⚡ ÉQUIPE → !team/!eq • !start/!starter • !soin/!heal • !evolution/!evo | ` +
       `🏆 BADGES → !badge | ` +
-      `🔢 SÉLECTION → !1, !2, !3... (événements ou après !evolution) | ` +
-      `ℹ️ INFO → !pokéchat • !pokéchat list`;
+      `🔢 SÉLECTION → !1, !2, !3... | ` +
+      `ℹ️ INFO → !pokéchat/!pokechat/!help`;
     
     client.say(channel, commandsMessage);
   } else {
@@ -651,7 +651,8 @@ async function handlePokéchatCommand(command, userId, channel, username) {
       `Lors des arènes, votez !combat ou !fuite pour affronter les champions. ` +
       `Le gagnant du vote est tiré au sort pour capturer, combattre ou affronter une arène. ` +
       `Construisez votre équipe, achetez des items, remportez des badges et devenez le meilleur dresseur ! ` +
-      `Tapez !pokéchat list pour voir toutes les commandes.`;
+      `Tapez !pokéchat list pour voir toutes les commandes.` +
+      `Plus d'informations ici => https://pokechat.owatertv.com ` ;
     
     client.say(channel, infoMessage);
   }
